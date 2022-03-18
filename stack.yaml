@@ -3,10 +3,12 @@ resolver: lts-17.14
 packages:
 - plutus-benchmark
 - plutus-core
+- plutus-core-testlib
 - plutus-errors
 - plutus-ledger-api
 - plutus-metatheory
 - plutus-tx
+- plutus-tx-testlib
 - plutus-tx-plugin
 - prettyprinter-configurable
 - word-array

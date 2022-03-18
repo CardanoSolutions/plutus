@@ -98,35 +98,13 @@ library
         memory -any,
         serialise -any
 
-library plutus-tx-testlib
-    import: lang
-    visibility: public
-    hs-source-dirs: testlib
-    exposed-modules:
-        PlutusTx.Test
-    build-depends:
-        base >=4.9 && <5,
-        prettyprinter -any,
-        text -any,
-        flat -any,
-        filepath -any,
-        plutus-core -any,
-        plutus-core:plutus-core-testlib -any,
-        plutus-tx -any,
-        lens -any,
-        mtl -any,
-        ghc-prim -any,
-        tagged -any,
-        tasty -any,
-        text -any
-
 test-suite plutus-tx-test
     import: lang
     if(impl(ghcjs) || os(windows))
         buildable: False
     type: exitcode-stdio-1.0
     main-is: Spec.hs
-    other-modules: 
+    other-modules:
         Suites.Laws
         Suites.Laws.Eq
         Suites.Laws.Ord

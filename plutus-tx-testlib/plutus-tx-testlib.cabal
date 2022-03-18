@@ -1,0 +1,53 @@
+cabal-version: 3.0
+name: plutus-tx-testlib
+version: 1.0.0.0
+license: Apache-2.0
+license-files:
+  LICENSE
+  NOTICE
+maintainer: michael.peyton-jones@iohk.io
+author: Michael Peyton Jones
+synopsis: Libraries for Plutus Tx and its prelude
+description:
+    Libraries for Plutus Tx and its prelude
+category: Language
+build-type: Simple
+
+source-repository head
+    type: git
+    location: https://github.com/input-output-hk/plutus
+
+common lang
+    default-language: Haskell2010
+    default-extensions: ExplicitForAll ScopedTypeVariables
+                        DeriveGeneric StandaloneDeriving DeriveLift
+                        GeneralizedNewtypeDeriving DeriveFunctor DeriveFoldable
+                        DeriveTraversable NoImplicitPrelude
+                        ImportQualifiedPost
+    ghc-options: -Wall -Wnoncanonical-monad-instances
+                 -Wincomplete-uni-patterns -Wincomplete-record-updates
+                 -Wredundant-constraints -Widentities -Wunused-packages
+                 -Wmissing-deriving-strategies
+                 -- See Plutus Tx readme
+                 -fobject-code -fno-ignore-interface-pragmas -fno-omit-interface-pragmas
+
+library
+    import: lang
+    hs-source-dirs: testlib
+    exposed-modules:
+        PlutusTx.Test
+    build-depends:
+        base >=4.9 && <5,
+        prettyprinter -any,
+        text -any,
+        flat -any,
+        filepath -any,
+        plutus-core -any,
+        plutus-core-testlib -any,
+        plutus-tx -any,
+        lens -any,
+        mtl -any,
+        ghc-prim -any,
+        tagged -any,
+        tasty -any,
+        text -any

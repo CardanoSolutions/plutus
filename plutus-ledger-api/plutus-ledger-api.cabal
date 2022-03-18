@@ -97,7 +97,7 @@ test-suite plutus-ledger-api-test
         mtl -any,
         aeson -any,
         plutus-core -any,
-        plutus-core:plutus-core-testlib -any,
+        plutus-core-testlib -any,
         plutus-ledger-api -any,
         hedgehog -any,
         tasty -any,

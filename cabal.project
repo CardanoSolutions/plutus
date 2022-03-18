@@ -4,10 +4,12 @@ index-state: 2021-11-18T00:00:00Z
 packages: doc
           plutus-benchmark
           plutus-core
+          plutus-core-testlib
           plutus-errors
           plutus-ledger-api
           plutus-metatheory
           plutus-tx
+          plutus-tx-testlib
           plutus-tx-plugin
           prettyprinter-configurable
           word-array
@@ -20,7 +22,7 @@ write-ghc-environment-files: never
 tests: true
 benchmarks: true
 
--- The only sensible test display option, since it allows us to have colourized 
+-- The only sensible test display option, since it allows us to have colourized
 -- 'tasty' output.
 test-show-details: direct
 
