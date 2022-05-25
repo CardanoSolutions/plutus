@@ -1,0 +1,87 @@
+cabal-version: 3.0
+name: plutus-tx-testlib
+version: 1.0.0.0
+license: Apache-2.0
+license-files:
+  LICENSE
+  NOTICE
+maintainer: michael.peyton-jones@iohk.io
+author: Michael Peyton Jones
+synopsis: Libraries for Plutus Tx and its prelude
+description:
+    Libraries for Plutus Tx and its prelude
+category: Language
+build-type: Simple
+
+source-repository head
+    type: git
+    location: https://github.com/input-output-hk/plutus
+
+common lang
+    default-language: Haskell2010
+    default-extensions: ExplicitForAll ScopedTypeVariables
+                        DeriveGeneric StandaloneDeriving DeriveLift
+                        GeneralizedNewtypeDeriving DeriveFunctor DeriveFoldable
+                        DeriveTraversable NoImplicitPrelude
+                        ImportQualifiedPost
+    ghc-options: -Wall -Wnoncanonical-monad-instances
+                 -Wincomplete-uni-patterns -Wincomplete-record-updates
+                 -Wredundant-constraints -Widentities -Wunused-packages
+                 -Wmissing-deriving-strategies
+                 -- See Plutus Tx readme
+                 -fobject-code -fno-ignore-interface-pragmas -fno-omit-interface-pragmas
+
+-- could split this up if we split up the main library for UPLC/PLC/PIR
+library plutus-core-testlib
+    import: lang
+    visibility: public
+    hs-source-dirs: testlib
+    exposed-modules:
+        PlutusCore.Test
+        PlutusCore.Generators
+        PlutusCore.Generators.AST
+        PlutusCore.Generators.Interesting
+        PlutusCore.Generators.NEAT.Common
+        PlutusCore.Generators.NEAT.Spec
+        PlutusCore.Generators.NEAT.Term
+        PlutusCore.Generators.NEAT.Type
+        PlutusCore.Generators.Test
+
+        PlutusIR.Test
+        PlutusIR.Generators.AST
+
+        Test.Tasty.Extras
+    other-modules:
+        PlutusCore.Generators.Internal.Denotation
+        PlutusCore.Generators.Internal.Dependent
+        PlutusCore.Generators.Internal.Entity
+        PlutusCore.Generators.Internal.TypeEvalCheck
+        PlutusCore.Generators.Internal.TypedBuiltinGen
+        PlutusCore.Generators.Internal.Utils
+    build-depends:
+        base >=4.9 && <5,
+        bifunctors -any,
+        bytestring -any,
+        containers -any,
+        dependent-map >=0.4.0.0,
+        filepath -any,
+        ghc-prim -any,
+        hedgehog >=1.0,
+        integer-gmp -any,
+        lazy-search -any,
+        lens -any,
+        megaparsec -any,
+        mmorph -any,
+        mtl -any,
+        plutus-core -any,
+        prettyprinter >=1.1.0.1,
+        prettyprinter-configurable -any,
+        size-based -any,
+        some < 1.0.3,
+        Stream -any,
+        tasty -any,
+        tasty-golden -any,
+        tasty-hedgehog -any,
+        tasty-hunit -any,
+        text -any,
+        transformers -any
