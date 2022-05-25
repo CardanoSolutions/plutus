@@ -1,0 +1,258 @@
+cabal-version: 3.0
+name: plutus-core-testlib
+version: 1.0.0.0
+license: Apache-2.0
+license-files:
+  LICENSE
+  NOTICE
+maintainer: michael.peyton-jones@iohk.io
+author: Plutus Core Team
+synopsis: Language library for Plutus Core
+description:
+    Pretty-printer, parser, and typechecker for Plutus Core.
+category: Language, Plutus
+build-type: Simple
+
+common lang
+    default-language: Haskell2010
+    default-extensions: ExplicitForAll FlexibleContexts ScopedTypeVariables
+                        DeriveGeneric StandaloneDeriving DeriveLift
+                        GeneralizedNewtypeDeriving DeriveFunctor DeriveFoldable
+                        DeriveTraversable DerivingStrategies DerivingVia
+                        ImportQualifiedPost
+    ghc-options: -Wall -Wnoncanonical-monad-instances
+                 -Wincomplete-uni-patterns -Wincomplete-record-updates
+                 -Wredundant-constraints -Widentities -Wunused-packages
+                 -Wmissing-deriving-strategies
+
+-- could split this up if we split up the main library for UPLC/PLC/PIR
+library plutus-core-testlib
+    import: lang
+    visibility: public
+    hs-source-dirs: testlib
+    exposed-modules:
+        PlutusCore.Test
+        PlutusCore.Generators
+        PlutusCore.Generators.AST
+        PlutusCore.Generators.Interesting
+        PlutusCore.Generators.NEAT.Common
+        PlutusCore.Generators.NEAT.Spec
+        PlutusCore.Generators.NEAT.Term
+        PlutusCore.Generators.NEAT.Type
+        PlutusCore.Generators.Test
+
+        PlutusIR.Test
+        PlutusIR.Generators.AST
+
+        Test.Tasty.Extras
+    other-modules:
+        PlutusCore.Generators.Internal.Denotation
+        PlutusCore.Generators.Internal.Dependent
+        PlutusCore.Generators.Internal.Entity
+        PlutusCore.Generators.Internal.TypeEvalCheck
+        PlutusCore.Generators.Internal.TypedBuiltinGen
+        PlutusCore.Generators.Internal.Utils
+    build-depends:
+        base >=4.9 && <5,
+        bifunctors -any,
+        bytestring -any,
+        containers -any,
+        dependent-map >=0.4.0.0,
+        filepath -any,
+        ghc-prim -any,
+        hedgehog >=1.0,
+        integer-gmp -any,
+        lazy-search -any,
+        lens -any,
+        megaparsec -any,
+        mmorph -any,
+        mtl -any,
+        plutus-core -any,
+        prettyprinter >=1.1.0.1,
+        prettyprinter-configurable -any,
+        size-based -any,
+        some < 1.0.3,
+        Stream -any,
+        tasty -any,
+        tasty-golden -any,
+        tasty-hedgehog -any,
+        tasty-hunit -any,
+        text -any,
+        transformers -any
+
+test-suite plutus-core-test
+    import: lang
+    type: exitcode-stdio-1.0
+    main-is: Spec.hs
+    hs-source-dirs: plutus-core/test
+    ghc-options: -threaded -rtsopts -with-rtsopts=-N
+    other-modules:
+        Check.Spec
+        CostModelInterface.Spec
+        Evaluation.Machines
+        Evaluation.Spec
+        Names.Spec
+        Normalization.Check
+        Normalization.Type
+        Pretty.Readable
+        TypeSynthesis.Spec
+    default-language: Haskell2010
+    build-depends:
+        base -any,
+        bytestring -any,
+        containers -any,
+        filepath -any,
+        flat -any,
+        hedgehog -any,
+        plutus-core -any,
+        plutus-core-testlib -any,
+        mmorph -any,
+        mtl -any,
+        prettyprinter -any,
+        tasty -any,
+        tasty-golden -any,
+        tasty-hedgehog -any,
+        tasty-hunit -any,
+        text -any,
+        transformers -any,
+        aeson -any,
+        template-haskell -any,
+        th-lift-instances -any,
+        th-utilities -any,
+
+test-suite plutus-ir-test
+    import: lang
+    type: exitcode-stdio-1.0
+    main-is: Spec.hs
+    hs-source-dirs: plutus-ir/test
+    other-modules:
+        NamesSpec
+        ParserSpec
+        TransformSpec
+        TypeSpec
+    build-depends:
+        base >=4.9 && <5,
+        plutus-core -any,
+        plutus-core-testlib -any,
+        flat -any,
+        hedgehog -any,
+        megaparsec -any,
+        tasty -any,
+        tasty-hedgehog -any,
+        text -any
+
+test-suite untyped-plutus-core-test
+    import: lang
+    type: exitcode-stdio-1.0
+    main-is: Spec.hs
+    hs-source-dirs: untyped-plutus-core/test
+    ghc-options: -O2 -threaded -rtsopts -with-rtsopts=-N
+    other-modules:
+        Evaluation.Builtins
+        Evaluation.Builtins.Coherence
+        Evaluation.Builtins.Common
+        Evaluation.Builtins.Definition
+        Evaluation.Builtins.MakeRead
+        Evaluation.Builtins.SECP256k1
+        Evaluation.FreeVars
+        Evaluation.Golden
+        Evaluation.Machines
+        Transform.Simplify
+        DeBruijn.Common
+        DeBruijn.Scope
+        DeBruijn.Spec
+        DeBruijn.UnDeBruijnify
+    build-depends:
+        base >=4.9 && <5,
+        bytestring -any,
+        cardano-crypto-class -any,
+        hedgehog -any,
+        lens -any,
+        mtl -any,
+        plutus-core -any,
+        plutus-core-testlib -any,
+        index-envs -any,
+        prettyprinter -any,
+        pretty-show -any,
+        secp256k1-haskell -any,
+        tasty -any,
+        tasty-golden -any,
+        tasty-hedgehog -any,
+        tasty-hunit -any,
+        text -any
+
+executable plc
+    import: lang
+    main-is: plc/Main.hs
+    hs-source-dirs: executables
+    other-modules:
+        Common
+        Parsers
+    build-depends:
+        plutus-core -any,
+        plutus-core-testlib -any,
+        aeson -any,
+        base <5,
+        bytestring -any,
+        deepseq -any,
+        flat -any,
+        monoidal-containers -any,
+        mtl -any,
+        optparse-applicative -any,
+        prettyprinter -any,
+        text -any,
+        transformers -any,
+        lens -any,
+        megaparsec -any
+
+executable uplc
+    import: lang
+    main-is: uplc/Main.hs
+    hs-source-dirs: executables
+    other-modules:
+        Common
+        Parsers
+    build-depends:
+        plutus-core -any,
+        plutus-core-testlib -any,
+        aeson -any,
+        base <5,
+        bytestring -any,
+        deepseq -any,
+        flat -any,
+        monoidal-containers -any,
+        mtl -any,
+        optparse-applicative -any,
+        prettyprinter -any,
+        split -any,
+        text -any,
+        transformers -any,
+        lens -any,
+        megaparsec -any
+
+executable pir
+    import: lang
+    main-is: pir/Main.hs
+    hs-source-dirs: executables
+    other-modules:
+        Common
+        Parsers
+    build-depends:
+        plutus-core -any,
+        plutus-core-testlib -any,
+        aeson -any,
+        base <5,
+        bytestring -any,
+        flat -any,
+        lens -any,
+        deepseq -any,
+        monoidal-containers -any,
+        optparse-applicative -any,
+        mtl -any,
+        transformers -any,
+        bytestring -any,
+        containers -any,
+        prettyprinter -any,
+        cassava -any,
+        text -any,
+        megaparsec -any
